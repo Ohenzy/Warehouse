@@ -1,0 +1,112 @@
+body {
+    font-family: sans-serif;
+    color: #113c57;
+}
+.buttonSub {
+    font-size: 18px;
+    padding: 5px;
+    border: hidden;
+    border-radius: 5px;
+    background-color: #113c57;
+    color: #ffffff;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+.buttonMenu {
+    font-size: 23px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 3px;
+    padding-right: 7px;
+    padding-left: 7px;
+    border: 3px  #113c57;
+    background-color: #113c57;
+    color: #ffffff;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    border-radius: 5px;
+}
+.textForm {
+    margin: 10px;
+    padding: 5px;
+    font-size: 20px;
+    color: #113c57;
+    background-color: white;
+    border: 1px solid #deddff;
+    border-radius: 5px;
+    width: 300px;
+
+}
+.divMain {
+    text-align: left;
+    padding: 30px;
+    padding-bottom: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    height: max-content;
+    min-width: 50%;
+    width: min-content;
+    background-color: aliceblue;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.divButton {
+    width: max-content;
+    margin-right: auto;
+    margin-left: auto;
+}
+hr {
+    border: 1px dashed #113c57;
+
+}
+form {
+    padding: 0;
+    margin: 0;
+}
+th {
+    text-align: center;
+    padding: 5px 10px 5px 10px;
+    font-size: 18px;
+    border: 2px solid #113c57;
+    background-color: #113c57;
+    color: white;
+}
+table {
+    color: #113c57;
+    border: 2px solid #113c57;
+    width: max-content;
+    border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.divCenter,.divCenterH, .divCenterS {
+    width: max-content;
+    height: max-content;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+.hideBorder {
+    border: hidden;
+    box-shadow: 0 0 0px rgba(0,0,0,0);
+}
+td, tr {
+    padding: 5px;
+    padding-left: 10px;
+    border: 1px dashed #113c57;
+    width: max-content;
+}
+.table tr:nth-child(odd){
+    background: #d8e0e7;
+}
+.table tr:nth-child(even){
+    background: aliceblue;
+}
+.colorTr{
+    background-color: black;
+}
+tr.tab_act  td{
+    background: #FFFF33;
+}
+.text{
+    font-family: sans-serif;
+    color: #113c57;
+}
+

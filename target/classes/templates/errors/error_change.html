@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление складом</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" >
+
+</head>
+<body>
+<div class="divMain">
+    <h1 style="text-align: center; color: #e20000"  > Ошибка: </h1>
+    <hr>
+
+    <div class="divCenter">
+        <h2 style="text-align: left;color: #e20000" th:text="${error}"></h2>
+
+        <a class="text" href="/" style="margin-top: 50px" methods="get"><h2>Вернуться на главную</h2></a>
+
+    </div>
+
+</div>
+</body>
+</html>

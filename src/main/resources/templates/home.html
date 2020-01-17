@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Управление складом</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script type="text/javascript">
+
+    </script>
+</head>
+<body style="text-align: center">
+
+<div class="divMain" style="padding-top: 0" >
+    <div >
+            <div style="width: 100%;padding-bottom: 0">
+                <div style="text-align: right;padding-bottom: 0" >
+                    <span   th:if="${role} == ${admin}" th:text="Администратор"></span>
+                    <h1 style="margin-top: 0px" th:inline="text">[[${#httpServletRequest.remoteUser}]]</h1>
+                </div>
+                <form style="text-align: right; " th:action="@{/logout}" method="post">
+                    <input style="text-align: right;font-size: 15px;" class="buttonSub"  type="submit" value="Выйти"/>
+                </form >
+            </div >
+        <div style="padding: 0" >
+            <h1 style="padding: 0;margin: 0" >Управление складом</h1>
+        </div>
+    </div>
+    <hr>
+    <div class="divButton" style="margin-top: 20px" >
+        <table class="hideBorder" >
+            <tr >
+                <form th:action="@{/database}" method="get"  >
+                    <input type="submit" value="Справочники" class="buttonMenu" >
+                </form>
+            </tr>
+            <tr>&nbsp;</tr>
+            <tr>
+                <form th:action="@{/operation}" method="get">
+                    <input type="submit" value="Операции" class="buttonMenu" >
+                </form>
+            </tr>
+            <tr>&nbsp;</tr>
+            <tr>
+                <form th:action="@{/history}" method="get">
+                    <input type="submit" value="Отчет" class="buttonMenu" >
+                </form>
+            </tr>
+            <tr>&nbsp;</tr>
+            <tr th:if="${role} == ${admin}">
+                <form th:action="@{/users}" method="get" >
+                    <input type="submit" value="Пользователи" class="buttonMenu" >
+                </form>
+            </tr>
+        </table>
+    </div>
+
+    <div style="width: min-content; margin-left: auto;margin-right: auto; margin-top: 150px">
+        <img th:src="@{/images/main_page.jpg}"  >
+    </div>
+</div>
+</body>
+</html>

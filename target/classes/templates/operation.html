@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление складом</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" >
+    <script type="text/javascript" src="js/vallidInvoce.js"></script>
+</head>
+<body>
+<div class="divMain">
+    <table class="hideBorder">
+        <tr class="hideBorder">
+            <td  class="hideBorder" style="padding-right: 30px"> <a th:href="@{/}"><img th:src="@{/images/button_back.jpg}" style="height: 35px;width: 35px"></a> </td>
+            <td  class="hideBorder" style="padding-right: 30px"> <a th:href="@{/}"> <img th:src="@{/images/button_home.jpg} " style="height: 30px;width: 30px"> </a></td>
+        </tr>
+    </table>
+    <h1> Операции </h1>
+    <hr>
+    <table class="hideBorder" style="padding: 0; margin: 0">
+        <tr class="hideBorder" style="padding: 0; margin: 0">
+            <td class="hideBorder" style="padding: 0; margin: 0"> <input id="buttonComing" type="button" value="Приход" class="buttonMenu" style="background-color: #186e99" onclick="formSwitch('coming')"></td>
+            <td class="hideBorder" style="padding: 0; margin: 0"> <input id="buttonExpend" type="button" value="Расход" class="buttonMenu" onclick="formSwitch('expend')"></td>
+        </tr>
+    </table>
+    <div>
+        <div id="coming" class="divCenter"  style="display: block;" >
+            <div class="divCenter">
+                <table class="hideBorder">
+                    <tr class="hideBorder">
+                        <td  class="hideBorder" > <input id="button-add" type="button" value="Новая накладная" class="buttonSub"  onclick="swapForm('add_list','button-add','button-delete','cancel')"> </td>
+                        <td  class="hideBorder" >
+                            <form th:action="@{/delete-invoice}" method="post" style="padding: 0;" onsubmit="return validateDelete('id_delete')">
+                                <input hidden id="id_delete" name="id_delete" value="">
+                                <input id="button-delete" type="submit" value="Удалить" class="buttonSub"  >
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+
+                <div id="add_list" style="display: none; box-shadow: 0 0 10px rgba(0,0,0,0.5); border: 2px solid #113c57; margin: 30px;padding: 30px; padding-top: 5px;  background-color: #E3EBF2;text-align: center" >
+                    <h2 style="text-align: center">Приходная накладная</h2>
+                    <br>
+                    <form id="add_form" th:action="@{/add-invoice}" th:method="post" onsubmit="return validateForm('add_form','date','counteragent','warehouse','jsonProducts')">
+                        <input hidden type="text" id="jsonProducts" name="jsonProducts">
+                        <table class="hideBorder">
+                            <tr>
+                                <td class="hideBorder" style="padding: 0; padding-left: 25px; text-align: left">Дата поставки</td>
+                                <td class="hideBorder" style="padding: 0; padding-left: 25px; text-align: left"> <a class="text" href="/database/counteragent" >Поставщик</a> </td>
+                                <td class="hideBorder" style="padding: 0; padding-left: 25px; text-align: left"> <a class="text" href="/database/warehouse" > Склад</a></td>
+                            </tr>
+                            <tr class="hideBorder">
+                                <td class="hideBorder" style="padding-top: 0">
+                                    <input class="textForm" style="text-align: center" id="date" type="text" name="date" th:value="${date_value}" placeholder="Дата поставки">
+                                </td>
+                                <td class="hideBorder" style="padding-top: 0">
+                                    <select id="counteragent"  name="counteragent"  class="textForm" style="text-align: left" >
+                                        <th:block th:each="counteragent : ${counteragents}" >
+                                            <option  th:value="${counteragent.getId()}" th:text="${counteragent.getName()}"></option>
+                                        </th:block>
+                                    </select>
+                                </td>
+                                <td class="hideBorder" style="padding-top: 0">
+                                    <select id="warehouse" name="warehouse"  class="textForm" >
+                                        <th:block th:each="warehouse : ${warehouses}" >
+                                            <option  th:value="${warehouse.getId()}" th:text="${warehouse.getName()}"></option>
+                                        </th:block>
+                                    </select>
+                                </td>
+                                <td>
+                                    <table class="hideBorder">
+                                        <tr class="hideBorder">
+                                            <td class="hideBorder">  <input  type="submit"  value="Сохранить" class="buttonSub" style="padding: 5px; font-size: 25px; width: 200px;" > </td>
+                                            <td class="hideBorder"> <input id="cancel" type="button"  value="Отмена" class="buttonSub" style="margin-left: 10px;padding: 5px; font-size: 25px;" onclick="swapForm('add_list','button-add','button-delete','cancel')"> </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                        <table class="hideBorder">
+                            <caption><h3> Добавление товара </h3></caption>
+                            <tr class="hideBorder">
+                                <td class="hideBorder"> <input class="textForm" id="nameProduct" type="text" name="nameProduct" placeholder="Наименование"> </td>
+                                <td class="hideBorder"> <input class="textForm" id="quantity" type="text" name="quantity" placeholder="Количество"> </td>
+                                <td class="hideBorder">
+                                    <select id="unit" name="unit" class="textForm"  >
+                                        <th:block th:each="unit : ${units}" >
+                                            <option th:id="${unit.getId()}" th:value="${unit.getId()}" th:text="${unit.getName()}"></option>
+                                        </th:block>
+                                    </select>
+                                </td >
+                                <td class="hideBorder"> <input id="price" class="textForm"  type="text" name="price" placeholder="Цена"> </td>
+                            </tr>
+                        </table>
+                  <div style="width: 100% ;margin-top: 30px; height: min-content; text-align: right">
+                      <input type="button" value="Добавить товар" class="buttonSub" style="padding: 5px; font-size: 25px" onclick="saveProduct('nameProduct','quantity','unit','price','productDiv','приход')">
+                      <input type="button" value="Отчистить" class="buttonSub" style="padding: 5px; font-size: 25px" onclick="clearProduct()">
+                  </div>
+                    <div id="productDiv" class="divCenter">
+<!--таблица товаров из массива js-->
+                    </div>
+                </div>
+            </div>
+            <div  class="divCenter">
+            <div class="divCenter"  style="margin-top: 50px; float: left" th:if="${parishInvoices.size() > 0}" >
+                <table id="table_parish" class="table" >
+                    <caption><h3>Приход товара</h3></caption>
+                    <th>Дата поставки</th>
+                    <th>Поставщик</th>
+                    <th>Склад</th>
+                    <tr th:each="parishInvoice : ${parishInvoices}"   class="alternate_color" th:id="${parishInvoice.getId()}" onclick="shHide(this);">
+                        <td style="text-align: center" th:text="${parishInvoice.getDate()}"></td>
+                        <td th:text="${parishInvoice.getCounteragent().getName()}"></td>
+                        <td th:text="${parishInvoice.getWarehouse().getName()}"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="divCenterH" style="margin-top: 50px; margin-left: 50px; float: left; display: none" th:each="parishInvoice : ${parishInvoices}" th:id="${parishInvoice.getId()*-1}" th:if="${!parishInvoices.isEmpty()}">
+                <table class="table">
+                    <caption><h3>Список прихода</h3></caption>
+                    <th> Наименование </th>
+                    <th> Количество </th>
+                    <th> Ед.измерения </th>
+                    <th> Цена </th>
+                    <th> Общая стоимость </th>
+                    <tr th:each="product : ${parishInvoice.getPartProducts()}" >
+                        <td  th:text="${product.getName()}"></td>
+                        <td   th:text="${product.getQuantity()}"></td>
+                        <td   th:text="${product.getUnit()}"></td>
+                        <td   th:text="${product.getPrice()}"></td>
+                        <td   th:text="${product.getPrice() * product.getQuantity()}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        </div>
+
+        <div id="expend" class="divCenter"  style="display: none">
+            <div class="divCenter">
+                <table class="hideBorder">
+                    <tr class="hideBorder">
+                        <td  class="hideBorder" > <input id="button-add_sales" type="button" value="Новая накладная" class="buttonSub"   onclick="swapForm('add_list_sales','button-add_sales','button-delete_sales','cancel_sales')"> </td>
+                        <td  class="hideBorder" >
+                            <form th:action="@{/delete-invoice}" method="post" style="padding: 0;" onsubmit="return validateDelete('id_delete_sales')">
+                                <input hidden id="id_delete_sales" name="id_delete" value="">
+                                <input id="button-delete_sales" type="submit" value="Удалить" class="buttonSub"  >
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+                <div id="add_list_sales" style="display: none; box-shadow: 0 0 10px rgba(0,0,0,0.5); border: 2px solid #113c57; margin: 30px;padding: 30px; padding-top: 5px;  background-color: #E3EBF2;text-align: center" >
+                    <h2 style="text-align: center">Расходная накладная</h2>
+                    <br>
+                    <form id="add_form_sales" th:action="@{/add-invoice}" th:method="post" onsubmit="return validateForm('add_form_sales','date_sales','counteragent_sales','warehouse_sales','jsonProducts_sales')">
+                        <input hidden type="text" id="jsonProducts_sales" name="jsonProducts">
+                        <table class="hideBorder">
+                            <tr>
+                                <td class="hideBorder" style="padding: 0; padding-left: 25px; text-align: left">Дата отправки</td>
+                                <td class="hideBorder" style="padding: 0; padding-left: 25px; text-align: left"> <a class="text" href="/database/counteragent" >Покупатель</a> </td>
+                                <td class="hideBorder" style="padding: 0; padding-left: 25px; text-align: left"> <a class="text" href="/database/warehouse" > Склад</a></td>
+                            </tr>
+                            <tr class="hideBorder">
+                                <td class="hideBorder" style="padding-top: 0">
+                                    <input class="textForm" style="text-align: center" id="date_sales" type="text" name="date" th:value="${date_value}" placeholder="Дата поставки">
+                                </td>
+                                <td class="hideBorder" style="padding-top: 0">
+                                    <select id="counteragent_sales"  name="counteragent"  class="textForm" style="text-align: left" >
+                                        <th:block th:each="counteragent : ${counteragents}" >
+                                            <option  th:value="${counteragent.getId()}" th:text="${counteragent.getName()}"></option>
+                                        </th:block>
+                                    </select>
+                                </td>
+                                <td class="hideBorder" style="padding-top: 0">
+                                    <select id="warehouse_sales" name="warehouse"  class="textForm" >
+                                        <th:block th:each="warehouse : ${warehouses}" >
+                                            <option  th:value="${warehouse.getId()}" th:text="${warehouse.getName()}"></option>
+                                        </th:block>
+                                    </select>
+                                </td>
+                                <td>
+                                    <table class="hideBorder">
+                                        <tr class="hideBorder">
+                                            <td class="hideBorder">  <input  type="submit"  value="Сохранить" class="buttonSub" style="padding: 5px; font-size: 25px; width: 200px;" > </td>
+                                            <td class="hideBorder"> <input id="cancel_sales" type="button"  value="Отмена" class="buttonSub" style="margin-left: 10px;padding: 5px; font-size: 25px;" onclick="swapForm('add_list_sales','button-add_sales','button-delete_sales','cancel_sales')"> </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div style="text-align: center">
+                    <table class="hideBorder" >
+                        <caption><h3> Отправка товара </h3></caption>
+                        <tr class="hideBorder">
+                            <td class="hideBorder">
+                                <select id="nameProduct_sales" th:name="nameProduct" class="textForm" >
+                                    <th:block th:each="product : ${products}" >
+                                        <option th:id="${product.getId()}" th:value="${product.getName()}" th:text="${product.getName() + ' ( ' + product.getQuantity() + ' | ' + product.getUnit()+' )'}"  ></option>
+                                    </th:block>
+                                </select>
+                            </td>
+                            <td class="hideBorder"> <input class="textForm" id="quantity_sales" type="text" name="quantity" placeholder="Количество"> </td>
+                            <td class="hideBorder">
+                                <select id="unit_sales" name="unit" class="textForm"  >
+                                    <th:block th:each="unit : ${units}" >
+                                        <option th:id="${unit.getId()}" th:value="${unit.getId()}" th:text="${unit.getName()}"></option>
+                                    </th:block>
+                                </select>
+                            </td >
+                            <td class="hideBorder"> <input id="price_sales" class="textForm"  type="text" name="price" placeholder="Цена"> </td>
+                        </tr>
+                    </table>
+                    </div>
+                    <div style="width: 100% ;margin-top: 30px; height: min-content; text-align: right">
+                        <input type="button" value="Добавить товар" class="buttonSub" style="padding: 5px; font-size: 25px" onclick="saveProduct('nameProduct_sales','quantity_sales','unit_sales','price_sales','productDiv_sales','расход')">
+                        <input type="button" value="Отчистить" class="buttonSub" style="padding: 5px; font-size: 25px" onclick="clearProduct()">
+                    </div>
+                    <div id="productDiv_sales" class="divCenter">
+                        <!--таблица товаров из массива js-->
+                    </div>
+                </div>
+            </div>
+            <div  class="divCenter">
+            <div class="divCenter"  style="margin-top: 50px; float: left" th:if="${salesInvoices.size() > 0}" >
+                <table class="table" >
+                    <caption><h3>Расход товара</h3></caption>
+                    <th>Дата отправки</th>
+                    <th>Покупатель</th>
+                    <th>Склад</th>
+                    <tr th:each="salesInvoice : ${salesInvoices}"   class="alternate_color" th:id="${salesInvoice.getId()}" onclick="shHide_s(this);">
+                        <td style="text-align: center" th:text="${salesInvoice.getDate()}"></td>
+                        <td th:text="${salesInvoice.getCounteragent().getName()}"></td>
+                        <td th:text="${salesInvoice.getWarehouse().getName()}"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="divCenterS" style="margin-top: 50px; margin-left: 50px; float: left; display: none" th:each="salesInvoice : ${salesInvoices}" th:id="${salesInvoice.getId()*-1}" th:if="${!salesInvoices.isEmpty()}">
+                <table class="table" th:if="${!salesInvoice.getPartProducts().isEmpty()}" >
+                    <caption><h3>Список расхода</h3></caption>
+                    <th> Наименование </th>
+                    <th> Количество </th>
+                    <th> Ед.измерения </th>
+                    <th> Цена </th>
+                    <th> Общая стоимость </th>
+                    <tr th:each="product : ${salesInvoice.getPartProducts()}" >
+                        <td  th:text="${product.getName()}"></td>
+                        <td   th:text="${product.getQuantity()}"></td>
+                        <td   th:text="${product.getUnit()}"></td>
+                        <td   th:text="${product.getPrice()}"></td>
+                        <td   th:text="${product.getPrice() * product.getQuantity()}"></td>
+                    </tr>
+                </table>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div th:if="${parishInvoices.isEmpty() && salesInvoices.isEmpty()}" class="divCenter">
+            <div style="width: min-content; margin-left: auto;margin-right: auto;  ">
+                <h1 style="text-align: center">Здесь пока ничего нет</h1>
+                <img th:src="@{/images/database_page.jpg}">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

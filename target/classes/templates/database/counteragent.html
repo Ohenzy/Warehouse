@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление складом</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" >
+    <script type="text/javascript">
+        function scrollForm(content) {
+            if(content.style.display === "none"){
+                content.style.display = "block";
+                document.getElementById("button-add").style.display = "none";
+                document.getElementById("button-delete").style.display = "none";
+                document.getElementById("cancel").style.display = "block";
+            }
+            else {
+                content.style.display = "none";
+                document.getElementById("button-add").style.display = "block";
+                document.getElementById("button-delete").style.display = "block";
+                document.getElementById("cancel").style.display = "none";
+            }
+        }
+
+        shHide = function (c) {
+            var a;
+            return function (b) {
+                a != b ? (b.className = c, a && (a.className = ""), a = b) : a = b.className = "";
+                if(a === b)
+                    document.getElementById('id_delete').value = a.getAttribute('id');
+                else
+                    document.getElementById('id_delete').value = "";
+            }
+        }("tab_act");
+
+        function validateDelete(id){
+            if(document.getElementById(id).value === ''){
+                alert("Выбирете строку для удаления");
+                return false;
+            }
+        }
+        function validateForm(){
+            let validate = true;
+            if(document.forms['add1']['name'].value === ""){
+                document.forms['add1']['name'].style.borderColor = '#ff0800';
+                validate = false;
+            }
+            if(document.forms['add1']['INN'].value === ""){
+                document.forms['add1']['INN'].style.borderColor = '#ff0800';
+                validate = false;
+            }
+            if(document.forms['add1']['OGRN'].value === ""){
+                document.forms['add1']['OGRN'].style.borderColor = '#ff0800';
+                validate = false;
+            }
+            return validate;
+        }
+    </script>
+</head>
+
+<body>
+<div class="divMain">
+
+    <table class="hideBorder">
+        <tr class="hideBorder">
+            <td  class="hideBorder" style="padding-right: 30px"> <a th:href="@{/database}"><img th:src="@{/images/button_back.jpg}" style="height: 35px;width: 35px"></a> </td>
+            <td  class="hideBorder" style="padding-right: 30px"> <a th:href="@{/}"> <img th:src="@{/images/button_home.jpg} " style="height: 30px;width: 30px"> </a></td>
+        </tr>
+    </table>
+
+    <h1> Контрагенты </h1>
+    <hr>
+    <div >
+        <div class="divCenter">
+            <table class="hideBorder">
+                <tr class="hideBorder">
+                    <td  class="hideBorder" > <input id="button-add" type="button" value="Добавить" class="buttonMenu"  onclick="scrollForm(document.getElementById('add'))"> </td>
+                    <td  class="hideBorder" >
+                        <form th:action="@{/delete-counteragent}" method="post" style="padding: 0;" onsubmit="return validateDelete('id_delete')">
+                            <input hidden id="id_delete" name="id_delete" value="">
+                            <input id="button-delete" type="submit" value="Удалить" class="buttonMenu"  >
+                        </form>
+                    </td>
+                </tr>
+            </table>
+
+            <div id="add" style="display: none; box-shadow: 0 0 10px rgba(0,0,0,0.5); border: 2px solid #113c57; margin: 30px;padding: 30px;background-color: #E3EBF2;text-align: center" >
+                <h2>Добавление контрагента</h2>
+                <form name="add1"  th:action="@{/add-counteragent}" th:method="post" onsubmit="return validateForm()">
+                    <input class="textForm"  type="text" name="name" placeholder="Организация*"> <br>
+                    <input class="textForm"  type="text" name="INN" placeholder="ИНН*"> <br>
+                    <input class="textForm"  type="text" name="OGRN" placeholder="ОГРН*"> <br>
+                    <input class="textForm"  type="text" name="nameDirector" placeholder="Директор"> <br>
+                    <input class="textForm"  type="text" name="phone" placeholder="Номер телефона"> <br>
+                    <input class="textForm"  type="text" name="address" placeholder="Адрес"> <br>
+                    <input class="textForm"  type="text" name="email" placeholder="Email"> <br>
+
+                    <div class="divCenter">
+                        <table class="hideBorder">
+                            <tr class="hideBorder">
+                                <td class="hideBorder">  <input  type="submit"  value="Сохранить" class="buttonSub" style="margin-left: 10px;"> </td>
+                                <td class="hideBorder"> <input id="cancel" type="button"  value="Отмена" class="buttonSub" style="margin-left: 10px;" onclick="scrollForm(document.getElementById('add'))"> </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="divCenter" style="margin-top: 50px">
+            <table class="table" th:if="${counteragents.iterator().hasNext()}"  >
+                <th>ID</th>
+                <th>Организация</th>
+                <th>ИНН</th>
+                <th>ОГРН</th>
+                <th>Директор</th>
+                <th>Номер телефона</th>
+                <th>Адрес</th>
+                <th>Email</th>
+                <tr  th:each="counteragent : ${counteragents}" class="alternate_color" th:id="${counteragent.getId()}" onclick="shHide(this);">
+                    <td  th:text="${counteragent.getId()}" ></td>
+                    <td th:text="${counteragent.getName()}"></td>
+                    <td th:text="${counteragent.getINN()}"></td>
+                    <td th:text="${counteragent.getOGRN()}"></td>
+                    <td th:text="${counteragent.getNameDirector()}"></td>
+                    <td th:text="${counteragent.getPhone()}"></td>
+                    <td th:text="${counteragent.getAddress()}"></td>
+                    <td th:text="${counteragent.getEmail()}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div th:if="${!counteragents.iterator().hasNext()}" class="divCenter">
+        <h1 style="text-align: center">Здесь пока ничего нет</h1>
+        <div style="width: min-content; margin-left: auto;margin-right: auto; margin-top: 150px; ">
+            <img th:src="@{/images/database_page.jpg}">
+        </div>
+    </div>
+</div>
+</body>
+</html>

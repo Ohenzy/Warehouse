@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление складом</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            color: #113c57;
+        }
+        .textForm {
+            margin: 10px;
+            padding: 5px;
+            font-size: 20px;
+            color: #113c57;
+            background-color: white;
+            border: 1px solid #deddff;
+            border-radius: 5px;
+            width: 300px;
+
+        }
+        .divMain {
+            text-align: left;
+            padding: 30px;
+            padding-bottom: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: max-content;
+            min-width: 50%;
+            width: min-content;
+            background-color: aliceblue;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .buttonMenu {
+            font-size: 23px;
+            margin-left: 5px;
+            margin-right: 5px;
+            padding: 3px;
+            border: 3px  #113c57;
+            background-color: #113c57;
+            color: #ffffff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            border-radius: 5px;
+        }
+        .divCenter {
+            width: max-content;
+            height: max-content;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        hr {
+            border: 1px dashed #113c57;
+        }
+        .text{
+            font-family: sans-serif;
+            color: #113c57;
+        }
+
+    </style>
+    <script>
+        function validp(){
+            let valid = true;
+            if(document.getElementById("username").value === ''){
+                document.getElementById("username").style.borderColor = '#ff0800';
+                valid = false;
+            }
+            if(document.getElementById("password").value === ''){
+                document.getElementById("password").style.borderColor = '#ff0800';
+                valid = false;
+            }
+            if(document.getElementById("password_valid").value === ''){
+                document.getElementById("password_valid").style.borderColor = '#ff0800';
+                valid = false;
+            }
+            if(valid)
+                if(document.getElementById("password").value !== document.getElementById("password_valid").value){
+                    document.getElementById("password_valid").style.borderColor = '#ff0800';
+                    document.getElementById("password").style.borderColor = '#ff0800';
+                    valid = false;
+                }
+
+            return valid;
+        }
+
+    </script>
+</head>
+<body>
+<div class="divMain">
+    <h1> Регистрация </h1>
+    <hr>
+    <div class="divCenter">
+        <form  th:action="@{/registration}" method="post" style="margin-top: 150px; text-align: center" onsubmit="return validp()">
+            <input class="textForm" type="text" id="username" name="username" placeholder=" логин"> <br><br>
+            <input class="textForm" type="password" id="password" name="password" placeholder=" пароль"> <br><br>
+            <input class="textForm" type="password" id="password_valid" name="password_valid" placeholder=" подтвердите пароль"> <br><br>
+            <input  class="buttonMenu" style="text-align: center; padding: 5px; " type="submit" value="Регистрация">
+        </form> <br><br>
+        <div class="divCenter">
+            <a  class="text" href="/login" methods="get">Войти </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
